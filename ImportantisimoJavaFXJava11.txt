@@ -1,0 +1,55 @@
+
+
+para la migracion de java 8 a java 11:
+
+1. hay que crear el proyecto con un archivo llamado modules-info.
+un modulo de java es un paquete con clases + el modules info.
+los jars viejos no tienen este descriptor de modules-info, el cual
+indica que modulos usa el modulo y que modulos provee.
+
+para ejecutar se pueden usar los jars viejos pero para desplegar con
+un runtime personalizado se debe usar jlink y los jars deben migrarse a java
+11 lo cual se explica en la carpera jxl en otro bloc de notas.
+
+cuando todos los jar que se usan estan migrados a modulo, los jars tendran
+empaquetados tambien el modules-info como mocules-info.class, es decir
+que que los 2 archivos que forman un modulo jar+info quedan en uno solo que 
+tambiene s jar.
+
+despues de esto se debe ir a netbeans al proyecto y agregar en la seccion de librerias
+las ubicaciones de los jars (ya en modulo) para poder compilar y ejecutar la aplicacion
+
+para pasar a un conjunto autocontenido se debe configurar las propiedades del proyecto
+y en la seccion packaging se activa la opcion de jlink y tambien la opcion de crear un 
+launcher.
+
+lo anterior configurara netbeans para crear con jlink el custom runtime y el
+launcher .bat.
+
+para ejeutar la aplicacion y desarrollarla se usan los jars pero para crear el runtime
+se deben usar los jmods. en la carpeta de openjdk de java se pueden ver los jmods 
+correspondientes a las librerias bases de java 11
+
+sin embargo si se usa javafx, se debe descargar los jars para desarrollo y luego
+descargar los jmods de java fx para poder crear su correspondiente runtime
+
+la parte mas difisil que no encontre en ninguna parte de internet pero que funciono
+es que en el comando de jlink se deben agregar las rutas de los jmods. buscando en
+los archivos de proyectos de netbeans se busca un archivo llamado:
+build-impl.xml
+
+en la linea
+
+<property name="jlink.systemmodules.internal" value="${jdk.home}/jmods;C:\Users\Raul Alzate\Documents\NetBeansProjects\javafx-jmods-11.0.2"/>
+
+solo aparecia la ruta de los jmods de java 11, y agregue la direccion de jmods de javafx.
+con esto se soluciono el error que no permitia ejecutar la app.
+
+el error decia algo asi como ... quantizer ... couldnt find pipe line ...
+
+
+
+en esta pagina hablan al respecto pero lo solucione muy diferente y mejor por medio de 
+la misma infraestructura de netbeans y ant
+
+https://github.com/javafxports/openjdk-jfx/issues/237

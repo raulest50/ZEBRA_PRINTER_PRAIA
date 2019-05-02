@@ -1,0 +1,33 @@
+de java 8 hacia atras solo existin clases y paquetes
+
+para mejorar la modularidad, seguridad y mantenibilidad de todo el
+ecosistema de java se hizo un cambio a partir de java 9 que es
+el proyecto jigsaw.
+
+esto permite que la aplicacion sea modular y crear jre especificos para la aplicacion
+unicamente con los modulos requeridos.
+
+un modulo es una lib de java convencional mas un archivo module-info que describe
+que modulos requiere y que modulos provee.
+
+los jars viejos al no tener un descriptor de modulo, lo llaman como un modulo automatico
+pero con estos no se puede hacer una distribucion de jlink
+
+para esto hay que actualizar los legacy jars para que queden como modulos
+
+busque demasiado y trabaje muy duro tratando de conocer la manera hasta que finalmente di con
+este hilo de stack overflow:
+
+https://stackoverflow.com/questions/47222226/how-to-inject-module-declaration-into-jar
+
+
+
+en resumen se hace asi:
+
+>jdeps --generate-module-info . jxl.jar
+>javac --patch-module jxl=jxl.jar /jxl/module-info.java
+>jar uf jxl.jar -C jxl module-info.class
+este ultimo actualiza el jar
+
+usando el siguiente comando se puede saber si el modulo es o no automatico
+>jar --describe-module -f jxl.jar
