@@ -464,6 +464,14 @@
                               <Font size="17.0" />
                            </font>
                         </CheckBox>
+                        <CheckBox fx:id="CHB_Test" layoutX="482.0" layoutY="15.0" mnemonicParsing="false" text="Modo Test">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="40.0" top="5.0" />
+                           </HBox.margin>
+                        </CheckBox>
                      </children>
                   </HBox>
                   <HBox>
@@ -476,7 +484,7 @@
                               <Insets bottom="5.0" left="15.0" right="20.0" top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="TFX0" prefHeight="38.0" prefWidth="247.0">
+                        <TextField fx:id="TFConfV" prefHeight="38.0" prefWidth="594.0">
                            <font>
                               <Font size="17.0" />
                            </font>
@@ -484,36 +492,12 @@
                               <Insets bottom="10.0" />
                            </HBox.margin>
                         </TextField>
-                        <Label fx:id="LabX0" text="(ok)">
+                        <Label fx:id="LabConfV" text="(ok)">
                            <font>
                               <Font size="17.0" />
                            </font>
                            <HBox.margin>
                               <Insets bottom="5.0" left="5.0" right="100.0" top="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label layoutX="25.0" layoutY="15.0" text="Y">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets right="15.0" top="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <TextField fx:id="TFY" layoutX="65.0" layoutY="10.0" prefHeight="38.0" prefWidth="247.0">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets right="15.0" />
-                           </HBox.margin>
-                        </TextField>
-                        <Label fx:id="LabY" layoutX="317.0" layoutY="15.0" text="(ok)">
-                           <font>
-                              <Font size="17.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets top="5.0" />
                            </HBox.margin>
                         </Label>
                      </children>

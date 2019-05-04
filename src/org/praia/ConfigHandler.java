@@ -35,13 +35,7 @@ public class ConfigHandler {
     /**
      * la posicion inicial en x para todos los elementos del label
      */
-    public final String X0 = "preferencias_java_praia_Xzero";
-    
-    /**
-     * para guardar un vector con las diferentes posiciones en Y que deben 
-     * tomar cada uno de los elementos del sticker
-     */
-    public final String Y = "preferencias_java_praia_vector_Y";
+    public final String CONFV = "preferencias_java_praia_conf_vector";
     
     
     /**

@@ -61,11 +61,8 @@ public class FXMLDocumentController implements Initializable {
 
     // para indicar coordenadas de inicio en x para todos los elementos del sticker
     @FXML
-    public TextField TFX0;
-    
-    @FXML
-    public TextField TFY;    
-    
+    public TextField TFConfV;
+      
     
     
     /**
@@ -136,20 +133,22 @@ public class FXMLDocumentController implements Initializable {
     public Label LabPrinter;
     
     @FXML
-    public Label LabX0;
-    
-    @FXML
-    public Label LabY;
+    public Label LabConfV;
+
     
     //check box para habilitar o deshabilitar la edicion de los campos de texto
     // de configuracion (columnas impresoras X e Y)
     @FXML
     public CheckBox CHB_Edit;
     
+    //cuando esta activado no se manda al servicio de impresion sino a la consola
+    @FXML
+    public CheckBox CHB_Test;
+    
     /**
      * para indicar estado de configuraciones que se guardan
      */
-    public final String MOD = "(?)";
+    public final String MOD = "(??)";
     public final String SAVED = "(ok)";
     
     /**
@@ -163,10 +162,6 @@ public class FXMLDocumentController implements Initializable {
     public final String COPIASTK = "$CANT";
     
     
-    // strigns para designar las corrdenadas de inicio del sticker
-    public final String X0 = "$XZ";
-    public final String Y0 = "$XZ";
-    
     
     public final String SKELETON = "^XA" // inicio de doc
             + "^FO210,30^BY1^BCN,50,N,N,N^FD"+ CODTK +"^FS" // codigo de barras
@@ -176,13 +171,6 @@ public class FXMLDocumentController implements Initializable {
             + "^PQ" + COPIASTK + ",0,0,N" // numero de copias
             + "^XZ"; // fin de doc, siempre se deben usar XA y XZ
     
-    public final String SKELETONCP = "^XA" // inicio de doc
-            + "^FO" + X0 + ",30^BY1^BCN,50,N,N,N^FD"+ CODTK +"^FS" // codigo de barras
-            + "^FO" + X0 + ",94^A0,N,32,25^FD" + CODTK + "^FS" // codigo de barras en alfanumerico
-            + "^FO" + X0 + ",137^A0,N,32,25^FD" + NAMETK + "^FS" // descripcion producto
-            + "^FO" + X0 + ",170^A0,N,32,25^FDUbicacion:" + UBIQTK + "^FS" // ubicaicon del producto
-            + "^PQ" + COPIASTK + ",0,0,N" // numero de copias
-            + "^XZ"; // fin de doc, siempre se deben usar XA y XZ
     
     public ConfigHandler cfn_han = new ConfigHandler();
     
@@ -194,10 +182,11 @@ public class FXMLDocumentController implements Initializable {
         this.LoadConf();
         
         this.SetEditableTFS(false);
+        
         // listener a cambios del ch box de edicion. determina si los TF de conf se pueden editar
         CHB_Edit.selectedProperty().addListener((observable, oldValue, newValues) ->{
                 boolean ed = CHB_Edit.isSelected(); // si esta seleccionado permite edicion
-                SetEditableTFS(true);
+                SetEditableTFS(ed);
             });
         
         /**
@@ -210,8 +199,7 @@ public class FXMLDocumentController implements Initializable {
         new ConfigTeam(TFcolCant, LabCant, cfn_han.COL_CANT);
         
         new ConfigTeamText(TFPrinter, LabPrinter, cfn_han.PRINTER);
-        new ConfigTeamText(TFX0, LabX0, cfn_han.X0);
-        new ConfigTeamText(TFY, LabY, cfn_han.Y);
+        new ConfigTeamText(TFConfV, LabConfV, cfn_han.CONFV);
         
         new ConfigTeam(TFcolTipo, LabTipo, cfn_han.COL_TIPO);
         new ConfigTeam(TFcolMayor, LabMayor, cfn_han.COL_MAYOR);
@@ -228,8 +216,7 @@ public class FXMLDocumentController implements Initializable {
                 TFcolCant.setEditable(ed);
                     
                 TFPrinter.setEditable(ed);
-                TFX0.setEditable(ed);
-                TFY.setEditable(ed);
+                TFConfV.setEditable(ed);
     }
     
     
@@ -282,8 +269,8 @@ public class FXMLDocumentController implements Initializable {
         TFcolTipo.setText(cfn_han.LoadConfig_Str(cfn_han.COL_CANT));
         TFcolMayor.setText(cfn_han.LoadConfig_Str(cfn_han.COL_MAYOR));
         
-        TFX0.setText(cfn_han.LoadConfig_Str(cfn_han.X0));
-        TFY.setText(cfn_han.LoadConfig_Str(cfn_han.Y));
+        TFConfV.setText(cfn_han.LoadConfig_Str(cfn_han.CONFV));
+        
     }
     
     
@@ -491,18 +478,16 @@ public class FXMLDocumentController implements Initializable {
      * @param cant 
      */
     public void SendSticker2Printer
-        (String cod, String desc, String ubiq, String cant, String tipo, String mayor){
+        (String cod, String desc, String ubiq, String cant, String tipo, String mayor)
+    {
         
-        String r = SKELETON.replace(CODTK, cod);
-        
-        if(desc.length()>15) r = r.replace(NAMETK, desc.substring(0, 14));
-        else r = r.replace(NAMETK, desc);
-        
-        r = r.replace(UBIQTK, ubiq);
-        r = r.replace(COPIASTK, cant);
+        String Nombre;
+        if(desc.length()>15) Nombre = desc.substring(0, 14);
+        else Nombre = desc;
+
         Printer pri = new Printer();
         try {
-            pri.Imprimir(r, cfn_han.LoadConfig_Str(cfn_han.PRINTER));
+            pri.Imprimir(cod, Nombre, ubiq, cant, tipo, mayor, this.CHB_Test.isSelected());
         } catch (PrintException ex) {
             System.out.println(ex.getMessage());
         }
