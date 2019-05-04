@@ -15,15 +15,37 @@ import java.util.prefs.Preferences;
 public class ConfigHandler {
     
     /**
-     * key para la distancia horizontal entre labels.
-     * En la imagen de la ventana de configuracion corresponde a la medida
-     * 'B'
+     * key para la columna de descripcion.
      */
     public final String COL_DESC = "preferencias_java_praia_gap_num_col_descri";
     
+    
     /**
-     * key para la distancia vertical entre labels. dimension C en la imagen
-     * de configuracion.
+     * para guardar el numero de columna del tipo de producto (juego, accesorio etc)
+     */
+    public final String COL_TIPO = "preferencias_java_praia_tipo_accesorio";
+    
+    
+    /**
+     * nombre key para guardar numero de columna en excel del precio de venta pormayor
+     */
+    public final String COL_MAYOR = "preferencias_java_praia_precio_mayorista";
+    
+    
+    /**
+     * la posicion inicial en x para todos los elementos del label
+     */
+    public final String X0 = "preferencias_java_praia_Xzero";
+    
+    /**
+     * para guardar un vector con las diferentes posiciones en Y que deben 
+     * tomar cada uno de los elementos del sticker
+     */
+    public final String Y = "preferencias_java_praia_vector_Y";
+    
+    
+    /**
+     * key para la columna del codigo
      */
     public final String COL_COD = "preferencias_java_praia_num_col_cod";
     
@@ -33,12 +55,12 @@ public class ConfigHandler {
     public final String COL_UBIQ = "preferencias_java_praia_num_col_ubiq";
     
     /**
-     * key para el ancho del label
+     * key para la columna de cantidad
      */
     public final String COL_CANT = "preferencias_java_praia_num_col_cant";
     
     /**
-     * nombre de la impresora de codigos de barras.
+     * nombre de la impresora de codigos de barras, ver escaneres e impresoras
      */
     public final String PRINTER = "preferencias_java_praia_printer";
     

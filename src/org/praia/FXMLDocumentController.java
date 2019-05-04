@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -47,7 +48,26 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     public TextField TFCopias;
+    
+    /**
+     * campos de texto agregados despues de migrar a java 11
+     */
+    @FXML
+    public TextField TFTipo; // para indicar si el producto es un juego conjunto etc (peticion cliente)
+    
+    @FXML
+    public TextField TFMayor; // el precio que se pasara a letras 
+    // (solo los trabajadores saben correspondencia Digito a letra facilitando negociacion con cliente )
 
+    // para indicar coordenadas de inicio en x para todos los elementos del sticker
+    @FXML
+    public TextField TFX0;
+    
+    @FXML
+    public TextField TFY;    
+    
+    
+    
     /**
      * boton para imprimir el codigo de barras especificado por los campos
      * de texto de arriba
@@ -82,6 +102,12 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public TextField TFcolCant;
     
+    @FXML
+    public TextField TFcolTipo;
+    
+    @FXML
+    public TextField TFcolMayor;
+    
     /**
      * labels para notificar si la configuracion quedo guardada.
      */
@@ -98,10 +124,27 @@ public class FXMLDocumentController implements Initializable {
     public Label LabCant;
     
     @FXML
+    public Label LabTipo;
+    
+    @FXML 
+    public Label LabMayor;
+    
+    @FXML
     public TextField TFPrinter;
     
     @FXML
     public Label LabPrinter;
+    
+    @FXML
+    public Label LabX0;
+    
+    @FXML
+    public Label LabY;
+    
+    //check box para habilitar o deshabilitar la edicion de los campos de texto
+    // de configuracion (columnas impresoras X e Y)
+    @FXML
+    public CheckBox CHB_Edit;
     
     /**
      * para indicar estado de configuraciones que se guardan
@@ -148,8 +191,14 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        
         this.LoadConf();
+        
+        this.SetEditableTFS(false);
+        // listener a cambios del ch box de edicion. determina si los TF de conf se pueden editar
+        CHB_Edit.selectedProperty().addListener((observable, oldValue, newValues) ->{
+                boolean ed = CHB_Edit.isSelected(); // si esta seleccionado permite edicion
+                SetEditableTFS(true);
+            });
         
         /**
          * se configuran los grupos para que se establescan los listener para 
@@ -159,9 +208,29 @@ public class FXMLDocumentController implements Initializable {
         new ConfigTeam(TFcolCodigo, LabCodigo, cfn_han.COL_COD);
         new ConfigTeam(TFcolUbicacion, LabUbiq, cfn_han.COL_UBIQ);
         new ConfigTeam(TFcolCant, LabCant, cfn_han.COL_CANT);
-        new ConfigTeamText(TFPrinter, LabPrinter, cfn_han.PRINTER);
         
-    }    
+        new ConfigTeamText(TFPrinter, LabPrinter, cfn_han.PRINTER);
+        new ConfigTeamText(TFX0, LabX0, cfn_han.X0);
+        new ConfigTeamText(TFY, LabY, cfn_han.Y);
+        
+        new ConfigTeam(TFcolTipo, LabTipo, cfn_han.COL_TIPO);
+        new ConfigTeam(TFcolMayor, LabMayor, cfn_han.COL_MAYOR);
+        
+    }
+
+
+    public void SetEditableTFS(boolean ed){
+        TFcolDescri.setEditable(ed);
+                TFcolCodigo.setEditable(ed);
+                TFcolTipo.setEditable(ed);
+                TFcolMayor.setEditable(ed);
+                TFcolUbicacion.setEditable(ed);
+                TFcolCant.setEditable(ed);
+                    
+                TFPrinter.setEditable(ed);
+                TFX0.setEditable(ed);
+                TFY.setEditable(ed);
+    }
     
     
     /**
@@ -170,23 +239,33 @@ public class FXMLDocumentController implements Initializable {
      * @param event 
      */
     @FXML
-    public void OnActionCopias(ActionEvent event) {
-        
+    public void onActionTFDescripcion(ActionEvent event) {
+        TFTipo.requestFocus();
     }
-
+    
+    @FXML
+    public void onActionTFTipo(ActionEvent event){
+        TFCodigo.requestFocus();
+    }
+    
+    @FXML
+    public void onActionTFCodigo(ActionEvent event) {
+        TFMayor.requestFocus();
+    }
+    
+    @FXML
+    public void OnActionTFMayor(ActionEvent event){
+        TFUbicacion.requestFocus();
+    }
+    
     @FXML
     public void OnActionTFUbicacion(ActionEvent event) {
         TFCopias.requestFocus();
     }
-
+    
     @FXML
-    public void onActionTFCodigo(ActionEvent event) {
-        TFUbicacion.requestFocus();
-    }
-
-    @FXML
-    public void onActionTFDescripcion(ActionEvent event) {
-        TFCodigo.requestFocus();
+    public void OnActionCopias(ActionEvent event) {
+        
     }
     
     
@@ -199,17 +278,25 @@ public class FXMLDocumentController implements Initializable {
         TFcolCant.setText(cfn_han.LoadConfig_Str(cfn_han.COL_CANT));
         TFcolUbicacion.setText(cfn_han.LoadConfig_Str(cfn_han.COL_UBIQ));
         TFPrinter.setText(cfn_han.LoadConfig_Str(cfn_han.PRINTER));
+        
+        TFcolTipo.setText(cfn_han.LoadConfig_Str(cfn_han.COL_CANT));
+        TFcolMayor.setText(cfn_han.LoadConfig_Str(cfn_han.COL_MAYOR));
+        
+        TFX0.setText(cfn_han.LoadConfig_Str(cfn_han.X0));
+        TFY.setText(cfn_han.LoadConfig_Str(cfn_han.Y));
     }
     
     
     @FXML
     public void onClickPrint(MouseEvent evt){
         String desc = TFDescripcion.getText();
+        String tipo = TFTipo.getText();
         String cod = TFCodigo.getText();
+        String mayorista = TFMayor.getText();
         String ubiq = TFUbicacion.getText();
         String cant = TFCopias.getText();
         
-        SendSticker2Printer(cod, desc, ubiq, cant);
+        SendSticker2Printer(cod, desc, ubiq, cant, tipo, mayorista);
     }
     
     
@@ -370,9 +457,13 @@ public class FXMLDocumentController implements Initializable {
         int COL_UBIQ = Integer.parseInt(TFcolUbicacion.getText())-1;
         int COL_CANT = Integer.parseInt(TFcolCant.getText())-1;
         
+        int COL_TIPO = Integer.parseInt(TFcolTipo.getText())-1;
+        int COL_MAYOR = Integer.parseInt(TFcolMayor.getText())-1;
+        
+        
         // variables auxiliares para guardar la informacion de cada sticker
         // en cada iteracion
-        String codigo, desc, ubiq, cant;
+        String codigo, desc, ubiq, cant, tipo, mayor;
         
         
         // se barre cada fila del excel
@@ -382,8 +473,10 @@ public class FXMLDocumentController implements Initializable {
             desc = sheet.getCell(COL_DESCRI, i).getContents();
             ubiq = sheet.getCell(COL_UBIQ, i).getContents();
             cant = sheet.getCell(COL_CANT, i).getContents();
+            tipo = sheet.getCell(COL_TIPO, i).getContents();
+            mayor = sheet.getCell(COL_MAYOR, i).getContents();
             // se imprime el numero de copias especificadas
-            SendSticker2Printer(codigo, desc, ubiq, cant);
+            SendSticker2Printer(codigo, desc, ubiq, cant, tipo, mayor);
         }
     }
     
@@ -397,7 +490,8 @@ public class FXMLDocumentController implements Initializable {
      * @param ubiq
      * @param cant 
      */
-    public void SendSticker2Printer(String cod, String desc, String ubiq, String cant){
+    public void SendSticker2Printer
+        (String cod, String desc, String ubiq, String cant, String tipo, String mayor){
         
         String r = SKELETON.replace(CODTK, cod);
         
