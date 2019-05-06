@@ -3,7 +3,6 @@ package org.praia;
 
 
 // importantisimo, requiere java.desktop
-import java.util.ArrayList;
 import javax.print.Doc;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
@@ -181,8 +180,9 @@ public class Printer {
         commds = this.AgregarCodBarras(commds,Pbarcode, cod);
         commds = this.AgregarTexto(commds,Ptx_barcode, cod);
         commds = this.AgregarTexto(commds,Pnombre, desc + " - " + tipo );
-        commds = this.AgregarTexto(commds,Pmayor, mayor_letras);
-        commds = this.AgregarTexto(commds,Pubiq, ubiq);
+        commds = this.AgregarTexto(commds,Pmayor, mayor_letras);        
+        String txt_ubicacion = cfg.LoadConfig_Str(cfg.UB_STR_FIELD);
+        commds = this.AgregarTexto(commds,Pubiq, txt_ubicacion.concat(ubiq));
         
         // se agrega el numero de copias
         commds = commds.concat("^PQ" + cant + ",0,0,N");

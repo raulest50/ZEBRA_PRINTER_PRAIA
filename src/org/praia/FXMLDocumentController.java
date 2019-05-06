@@ -105,6 +105,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     public TextField TFcolMayor;
     
+    @FXML
+    public TextField TFUB;
+    
     /**
      * labels para notificar si la configuracion quedo guardada.
      */
@@ -134,6 +137,9 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     public Label LabConfV;
+    
+    @FXML
+    public Label LabUbTf;
 
     
     //check box para habilitar o deshabilitar la edicion de los campos de texto
@@ -200,6 +206,7 @@ public class FXMLDocumentController implements Initializable {
         
         new ConfigTeamText(TFPrinter, LabPrinter, cfn_han.PRINTER);
         new ConfigTeamText(TFConfV, LabConfV, cfn_han.CONFV);
+        new ConfigTeamText(TFUB, LabUbTf, cfn_han.UB_STR_FIELD);
         
         new ConfigTeam(TFcolTipo, LabTipo, cfn_han.COL_TIPO);
         new ConfigTeam(TFcolMayor, LabMayor, cfn_han.COL_MAYOR);
@@ -217,6 +224,7 @@ public class FXMLDocumentController implements Initializable {
                     
                 TFPrinter.setEditable(ed);
                 TFConfV.setEditable(ed);
+                TFUB.setEditable(ed);
     }
     
     

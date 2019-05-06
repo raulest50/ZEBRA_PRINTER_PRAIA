@@ -15,6 +15,11 @@ import java.util.prefs.Preferences;
 public class ConfigHandler {
     
     /**
+     * key para el texto deseado para anteceder el campo de ubicacion
+     */
+    public final String UB_STR_FIELD = "preferencias_java_praia_ub_tf";
+    
+    /**
      * key para la columna de descripcion.
      */
     public final String COL_DESC = "preferencias_java_praia_gap_num_col_descri";
